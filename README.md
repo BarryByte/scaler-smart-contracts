@@ -6,7 +6,7 @@ Welcome to the project repository for the Scaler School of Technology's **Smart 
 
 ## 📖 Project Overview
 
-This repository contains the final project submission for **Group <Your Group Number>**. The project is part of the Smart Contracts Course and is designed to apply the knowledge you have gained throughout the course.
+This repository contains the final project submission for **Group 2**. The project is part of the Smart Contracts Course and is designed to apply the knowledge you have gained throughout the course.
 
 Each group has the freedom to:
 - **Choose any blockchain** platform (e.g., Ethereum, Solana, Polygon, etc.).
@@ -16,71 +16,19 @@ Each group has the freedom to:
 
 ## 📋 Project Details
 
-> **Note**: Replace the placeholders below with your actual project details.
-
-- **Project Name**: _Enter your project name here._
-- **Blockchain Platform**: _Specify the blockchain platform you are using (e.g., Ethereum, Solana, Polygon, etc.)._
-- **Network**: _Specify the network you are deploying to (e.g., Mainnet, Goerli Testnet, etc.)._
+- **Project Name**: NFT Ticketing Platform
+- **Blockchain Platform**: Ethereum
+- **Network**: Sepolia
 - **Deployed Smart Contract Address**: _Provide the address of your deployed smart contract._
-- **Wallet Address**: _Provide the wallet address used for deploying the contract._
-- **Frontend Repository/Code**:
-  - _Provide the relative path to the frontend code directory in this repository._
-  - _If hosted externally, provide the link to the frontend repository._
+- **Wallet Address**: 0x7936d757997C9197849aE6a318e27939D958348f
+- **Frontend Repository/Code**: frontend/
 - **Team Members**:
-  1. **Name (GitHub ID)**: _List each team member and their GitHub ID here._
-  2. **Name (GitHub ID)**: _Add additional members if applicable._
-  3. **Name (GitHub ID)**: _Optional third member._
+  1. **Name (GitHub ID)**: Kumar Kartikay (https://github.com/KKartikay-27)
+  2. **Name (GitHub ID)**: Abhay Raj (https://github.com/barrybyte)
+  3. **Name (GitHub ID)**: Harsh Kumar (https://github.com/Harsh-svg988)
 - **Project Description**:  
-  _Provide a brief description of your project, its purpose, and the problem it aims to solve._
+  The NFT Ticketing Platform is a cutting-edge solution designed to revolutionize event ticketing by leveraging blockchain technology and NFTs (Non-Fungible Tokens). This platform enables event organizers to create and sell NFT-based tickets, offering attendees a secure and unique way to access events.
 
----
-
-## 🛠️ Instructions
-
-Follow these steps to complete and submit your project:
-
-1. **Fork this Repository**:
-   - Click the "Fork" button at the top right of this page.
-
-2. **Clone Your Fork**:
-   - Clone the repository to your local machine:
-     ```bash
-     git clone https://github.com/<your-github-username>/<repo-name>.git
-     cd <repo-name>
-     ```
-
-3. **Create a New Branch**:
-   - Name the branch after your group:
-     ```bash
-     git checkout -b group-<group-number>
-     ```
-
-4. **Fill in the Project Details**:
-   - Update the "Project Details" section of this `README.md` file with your project specifics.
-
-5. **Add Your Files**:
-   - Place your smart contracts, scripts, documentation, and any other necessary files in the appropriate directories.
-   - Work on your actual project!
-   - Add your frontend code to the `frontend/` directory.
-
-7. **Commit and Push**:
-   - Stage and commit your changes:
-     ```bash
-     git add .
-     git commit -m "Initial submission for Group <group-number>"
-     ```
-   - Push the branch to your fork:
-     ```bash
-     git push origin group-<group-number>
-     ```
-
-8. **Submit a Pull Request (PR)**:
-   - Open a pull request to the upstream repository with the same branch name (`group-<group-number>`).
-
-9. **Update the Group Spreadsheet**:
-   - Add your project details and team members to the [shared Google Spreadsheet](https://docs.google.com/spreadsheets/d/1C_mDUio9TwyUG8cXcGF81EQPDmd1Q-l-13LXyUnXVBE/edit?usp=sharing).
-
----
 
 ## 📂 Directory Structure
 
@@ -95,16 +43,3 @@ Follow these steps to complete and submit your project:
 ├── frontend/               # Place frontend code here
 └── package.json            # Node.js-based dependencies (if applicable)
 ```
-
----
-
-## 📝 Guidelines
-
-- **Branch Naming**: Use `group-<group-number>` as your branch name.
-- **Documentation**: Provide clear and concise documentation for your project.
-- **Testing**: Ensure your contracts are thoroughly tested before submission.
-- **Innovation**: Feel free to get creative and explore unique project ideas!
-
----
-
-Good luck!
