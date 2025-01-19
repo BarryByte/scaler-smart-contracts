@@ -12,6 +12,24 @@ const MintTicket = () => {
 
   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
+  // Function to check if the wallet is already connected
+  const checkWalletConnection = async () => {
+    const savedWalletConnected = localStorage.getItem("walletConnected");
+
+    if (savedWalletConnected === "true" && window.ethereum) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await provider.listAccounts();
+      
+      if (accounts.length > 0) {
+        setCurrentAccount(accounts[0]);
+        setWalletConnected(true);
+        setMessage("🟢 Wallet Connected Successfully!");
+      } else {
+        setMessage("⚠️ Wallet is not connected.");
+      }
+    }
+  };
+
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
@@ -35,7 +53,6 @@ const MintTicket = () => {
 
   const handleAccountsChanged = (accounts) => {
     if (accounts.length === 0) {
-      // User disconnected wallet
       setWalletConnected(false);
       setCurrentAccount(null);
       setMessage("⚠️ Wallet disconnected.");
@@ -54,6 +71,8 @@ const MintTicket = () => {
   };
 
   useEffect(() => {
+    checkWalletConnection(); // Check wallet connection on load
+
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
       window.ethereum.on("disconnect", handleDisconnect);
