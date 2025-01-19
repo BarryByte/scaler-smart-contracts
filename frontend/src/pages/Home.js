@@ -1,36 +1,33 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+  const navigate = useNavigate();
+  const handleMint = () => {
+    navigate('/mint'); // Adds '/mint' to the URL
+  };
+
   return (
     <div className="flex justify-center items-center h-screen bg-black">
       {/* NFT Ticket Card */}
       <div className="relative z-10 bg-gray-900 text-white p-10 rounded-3xl shadow-2xl max-w-xl border-2 border-transparent 
         bg-gradient-to-br from-gray-800 to-black hover:border-pink-500 transition-all duration-300">
-        
+
         {/* Ticket Title */}
         <h1 className="text-4xl font-extrabold text-neonPink tracking-wide text-center drop-shadow-lg">
-          🎟️ NFT Event Ticket
+          🎟 NFT Event Ticket
         </h1>
-        
+
         {/* Ticket Details */}
         <p className="text-gray-300 mt-4 text-center">
           Secure your access to exclusive events with blockchain-powered NFT tickets.
         </p>
 
-        {/* QR Code & Ticket Number */}
-        <div className="flex justify-between items-center mt-6 border-t border-gray-600 pt-4">
-          <div>
-            <p className="text-sm text-gray-400">Ticket No:</p>
-            <span className="text-lg font-semibold">#NFT-2025</span>
-          </div>
-          <div className="bg-white p-3 rounded-lg shadow-md">
-            <i className="fas fa-qrcode text-2xl text-black"></i>
-          </div>
-        </div>
-
         {/* CTA Button */}
         <button className="mt-6 w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold 
-          text-lg rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 hover:shadow-purple-500/50">
+          text-lg rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 hover:shadow-purple-500/50"
+        onClick={handleMint}>
           Mint Your Ticket
         </button>
 

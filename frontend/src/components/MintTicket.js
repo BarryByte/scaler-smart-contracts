@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
+import { Web3Provider } from "@ethersproject/providers"; // Correct import for provider
+import { ethers } from "ethers"; // Import ethers for other utilities like Contract
 import TicketNFT from "../contracts/TicketNFT.json";
 
 const MintTicket = () => {
@@ -8,7 +9,7 @@ const MintTicket = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [walletConnected, setWalletConnected] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState(null);
+  
 
   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
@@ -17,15 +18,15 @@ const MintTicket = () => {
     const savedWalletConnected = localStorage.getItem("walletConnected");
 
     if (savedWalletConnected === "true" && window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const provider = new Web3Provider(window.ethereum);
       const accounts = await provider.listAccounts();
-      
+
       if (accounts.length > 0) {
-        setCurrentAccount(accounts[0]);
+        
         setWalletConnected(true);
         setMessage("🟢 Wallet Connected Successfully!");
       } else {
-        setMessage("⚠️ Wallet is not connected.");
+        setMessage("⚠ Wallet is not connected.");
       }
     }
   };
@@ -33,15 +34,16 @@ const MintTicket = () => {
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        setMessage("⚠️ MetaMask is not installed. Please install MetaMask.");
+        setMessage("⚠ MetaMask is not installed. Please install MetaMask.");
         return;
       }
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const accounts = await provider.send("eth_requestAccounts", []);
+      const provider = new Web3Provider(window.ethereum); // Correct provider initialization
+      await provider.send("eth_requestAccounts", []); // Request user accounts
+      const accounts = await provider.listAccounts(); // Get accounts after requesting
 
       if (accounts.length > 0) {
-        setCurrentAccount(accounts[0]);
+        
         setWalletConnected(true);
         localStorage.setItem("walletConnected", "true");
         setMessage("🟢 Wallet Connected Successfully!");
@@ -54,19 +56,19 @@ const MintTicket = () => {
   const handleAccountsChanged = (accounts) => {
     if (accounts.length === 0) {
       setWalletConnected(false);
-      setCurrentAccount(null);
-      setMessage("⚠️ Wallet disconnected.");
+      
+      setMessage("⚠ Wallet disconnected.");
       localStorage.removeItem("walletConnected");
     } else {
-      setCurrentAccount(accounts[0]);
+     
       setMessage("🟢 Wallet account changed.");
     }
   };
 
   const handleDisconnect = () => {
     setWalletConnected(false);
-    setCurrentAccount(null);
-    setMessage("⚠️ Wallet disconnected.");
+    
+    setMessage("⚠ Wallet disconnected.");
     localStorage.removeItem("walletConnected");
   };
 
@@ -97,7 +99,7 @@ const MintTicket = () => {
   const mintTicket = async () => {
     try {
       if (!window.ethereum) {
-        setMessage("⚠️ MetaMask is not installed. Please install MetaMask.");
+        setMessage("⚠ MetaMask is not installed. Please install MetaMask.");
         return;
       }
 
@@ -105,7 +107,7 @@ const MintTicket = () => {
       setMessage("");
 
       if (!address || !metadata) {
-        setMessage("⚠️ Please fill in all fields.");
+        setMessage("⚠ Please fill in all fields.");
         setLoading(false);
         return;
       }
@@ -130,7 +132,7 @@ const MintTicket = () => {
     <div className="min-h-screen flex justify-center items-center bg-black p-6">
       <div className="bg-gray-900 bg-opacity-80 backdrop-blur-lg p-8 rounded-3xl shadow-2xl w-full max-w-md border border-gray-700">
         <h1 className="text-4xl font-extrabold text-center text-white neon-text mb-6">
-          🎟️ Mint a Ticket
+          🎟 Mint a Ticket
         </h1>
 
         <p className={`text-center mb-4 ${walletConnected ? "text-green-400" : "text-red-400"}`}>
@@ -167,11 +169,10 @@ const MintTicket = () => {
         ) : (
           <button
             onClick={mintTicket}
-            className={`w-full py-3 rounded-lg font-semibold text-lg transition-transform transform hover:scale-105 focus:outline-none ${
-              loading
-                ? "bg-gray-600 cursor-not-allowed"
-                : "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-pink-500/50"
-            }`}
+            className={`w-full py-3 rounded-lg font-semibold text-lg transition-transform transform hover:scale-105 focus:outline-none ${loading
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-pink-500/50"
+              }`}
             disabled={loading}
           >
             {loading ? "Minting..." : "🚀 Mint Ticket"}
