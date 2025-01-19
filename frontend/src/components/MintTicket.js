@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import TicketNFT from "../contracts/TicketNFT.json"; 
+import TicketNFT from "../contracts/TicketNFT.json";
 
 const MintTicket = () => {
   const [address, setAddress] = useState("");
@@ -8,8 +8,72 @@ const MintTicket = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [walletConnected, setWalletConnected] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState(null);
 
   const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+
+  const connectWallet = async () => {
+    try {
+      if (!window.ethereum) {
+        setMessage("⚠️ MetaMask is not installed. Please install MetaMask.");
+        return;
+      }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const accounts = await provider.send("eth_requestAccounts", []);
+
+      if (accounts.length > 0) {
+        setCurrentAccount(accounts[0]);
+        setWalletConnected(true);
+        localStorage.setItem("walletConnected", "true");
+        setMessage("🟢 Wallet Connected Successfully!");
+      }
+    } catch (error) {
+      setMessage("❌ Error connecting wallet: " + error.message);
+    }
+  };
+
+  const handleAccountsChanged = (accounts) => {
+    if (accounts.length === 0) {
+      // User disconnected wallet
+      setWalletConnected(false);
+      setCurrentAccount(null);
+      setMessage("⚠️ Wallet disconnected.");
+      localStorage.removeItem("walletConnected");
+    } else {
+      setCurrentAccount(accounts[0]);
+      setMessage("🟢 Wallet account changed.");
+    }
+  };
+
+  const handleDisconnect = () => {
+    setWalletConnected(false);
+    setCurrentAccount(null);
+    setMessage("⚠️ Wallet disconnected.");
+    localStorage.removeItem("walletConnected");
+  };
+
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("disconnect", handleDisconnect);
+    }
+
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        window.ethereum.removeListener("disconnect", handleDisconnect);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setMessage("");
+    }, 8000);
+
+    return () => clearTimeout(timeout); // Cleanup the timeout
+  }, [message]);
 
   const mintTicket = async () => {
     try {
@@ -27,24 +91,16 @@ const MintTicket = () => {
         return;
       }
 
-      // Connect to MetaMask
       const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
 
-      // Check Wallet Connection
-      setWalletConnected(true);
-
-      // Create contract instance
       const contract = new ethers.Contract(contractAddress, TicketNFT.abi, signer);
 
-      // Mint the ticket
       const tx = await contract.mintTicket(address, metadata);
       setMessage("⏳ Transaction submitted. Waiting for confirmation...");
       await tx.wait();
       setMessage("✅ Ticket minted successfully!");
     } catch (error) {
-      console.error(error);
       setMessage("❌ Error minting ticket: " + error.message);
     } finally {
       setLoading(false);
@@ -58,9 +114,8 @@ const MintTicket = () => {
           🎟️ Mint a Ticket
         </h1>
 
-        {/* Wallet Connection Status */}
         <p className={`text-center mb-4 ${walletConnected ? "text-green-400" : "text-red-400"}`}>
-          {walletConnected ? "🟢 Wallet Connected" : "🔴 Wallet Not Connected"}
+          {walletConnected ? `🟢 Wallet Connected` : "🔴 Wallet Not Connected"}
         </p>
 
         <div className="mb-4">
@@ -72,7 +127,7 @@ const MintTicket = () => {
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>
-        
+
         <div className="mb-6">
           <input
             type="text"
@@ -82,23 +137,30 @@ const MintTicket = () => {
             onChange={(e) => setMetadata(e.target.value)}
           />
         </div>
-        
-        <button
-          onClick={mintTicket}
-          className={`w-full py-3 rounded-lg font-semibold text-lg transition-transform transform hover:scale-105 focus:outline-none ${
-            loading
-              ? "bg-gray-600 cursor-not-allowed"
-              : "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-pink-500/50"
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Minting..." : "🚀 Mint Ticket"}
-        </button>
+
+        {!walletConnected ? (
+          <button
+            onClick={connectWallet}
+            className="w-full py-3 rounded-lg font-semibold text-lg bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-pink-500/50 transition-transform transform hover:scale-105 focus:outline-none"
+          >
+            Connect Wallet
+          </button>
+        ) : (
+          <button
+            onClick={mintTicket}
+            className={`w-full py-3 rounded-lg font-semibold text-lg transition-transform transform hover:scale-105 focus:outline-none ${
+              loading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg hover:shadow-pink-500/50"
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Minting..." : "🚀 Mint Ticket"}
+          </button>
+        )}
 
         {message && (
-          <p className="mt-4 text-center text-gray-300">
-            {message}
-          </p>
+          <p className="mt-4 text-center text-gray-300">{message}</p>
         )}
       </div>
     </div>
