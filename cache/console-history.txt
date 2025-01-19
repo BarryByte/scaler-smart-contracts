@@ -1,0 +1,12 @@
+console.log("Ticket Counter:", counter.toString());
+const counter = await ticketNFT.ticketCounter();
+const ticketNFT = await TicketNFT.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const TicketNFT = await ethers.getContractFactory("TicketNFT");
+const counter = await ticketNFT.ticketCounter();
+const ticketNFT = await TicketNFT.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
+const TicketNFT = await ethers.getContractFactory("TicketNFT");
+console.log("Ticket Counter:", counter.toString());
+const counter = await ticketNFT.ticketCounter();
+// Check the ticket counter (it should be 0 initially)
+const ticketNFT = await TicketNFT.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3"); // Replace with your contract address
+const TicketNFT = await ethers.getContractFactory("TicketNFT");
