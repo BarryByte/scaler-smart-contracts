@@ -19,8 +19,8 @@ async function main() {
   console.log("TicketNFT deployed to:", ticketNFT.address);
 
   // Wait for a few blocks to ensure the deployment is recognized by Etherscan
-  console.log("Waiting for 5 confirmations...");
-  await ticketNFT.deployTransaction.wait(5);  // Wait for 5 confirmations
+  console.log("Waiting for 15 confirmations...");
+  await ticketNFT.deployTransaction.wait(15);  // Wait for 15 confirmations
 
   // Optional: Verify the contract on Etherscan (if using Hardhat Etherscan plugin)
   console.log("Verifying contract on Etherscan...");

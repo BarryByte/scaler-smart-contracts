@@ -19,7 +19,7 @@ Each group has the freedom to:
 - **Project Name**: NFT Ticketing Platform
 - **Blockchain Platform**: Ethereum
 - **Network**: Sepolia
-- **Deployed Smart Contract Address**: _Provide the address of your deployed smart contract._
+- **Deployed Smart Contract Address**: 0x3d94F86B92522ae2bB8AcC6E9d570880a96CAa74
 - **Wallet Address**: 0x7936d757997C9197849aE6a318e27939D958348f
 - **Frontend Repository/Code**: frontend/
 - **Team Members**:
@@ -42,4 +42,55 @@ Each group has the freedom to:
 ├── project/                # Placeholder for group project files
 ├── frontend/               # Place frontend code here
 └── package.json            # Node.js-based dependencies (if applicable)
+```
+---
+
+## How the Project Works (End-to-End Flow)
+### 1️⃣ User Connects MetaMask
+- Checks if MetaMask is installed.
+- If the user has a wallet, it connects and saves this state in localStorage.
+
+### 2️⃣ Minting an NFT Ticket
+- User *inputs an Ethereum address and event details*.
+- Calls mintTicket() from the smart contract.
+- The ticket is minted and assigned to the given Ethereum address.
+
+### 3️⃣ Viewing NFT Tickets
+- Calls ticketCounter() to get the total number of minted tickets.
+- Fetches metadata & owner details for each ticket.
+- Displays all the tickets owned by the connected wallet.
+
+---
+
+## Steps to run locally
+
+.env
+```
+ETHERSCAN_API_KEY=...
+METAMASK_API_KEY=...
+ACCOUNT_KEY=...
+```
+
+frontend/.env
+```
+CONTRACT_ADDRESS=...
+```
+
+Install npm
+```
+npm install
+```
+
+### To start frontend - 
+```
+cd frontend && npm start
+```
+
+### To verify contract is Deployed
+```
+npx hardhat verify --network sepolia ${CONTRACT-ADDRESS} 
+```
+### To run tests
+```
+npx hardhat test tests/TicketNFT.test.mjs 
 ```
